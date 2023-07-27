@@ -65,7 +65,7 @@ fn gen_bindings() {
         ))
         .arg("-Dd_m3LogOutput=0")
         .arg("-Iwasm3/source");
-    let status = bindgen.status().expect("Unable to generate bindings");
+    let status = bindgen.status().expect("Unable to generate bindings. Is the rust-bindgen cli installed?\n   You may try to run: 'cargo install bindgen-cli'");
     if !status.success() {
         panic!("Failed to run bindgen: {:?}", status);
     }
