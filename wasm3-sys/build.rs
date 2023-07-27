@@ -4,9 +4,9 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 static WASM3_SOURCE: &str = "wasm3/source";
-const WHITELIST_REGEX_FUNCTION: &str = "([A-Z]|m3_).*";
-const WHITELIST_REGEX_TYPE: &str = "(?:I|c_)?[Mm]3.*";
-const WHITELIST_REGEX_VAR: &str = WHITELIST_REGEX_TYPE;
+const ALLOWLIST_REGEX_FUNCTION: &str = "([A-Z]|m3_).*";
+const ALLOWLIST_REGEX_TYPE: &str = "(?:I|c_)?[Mm]3.*";
+const ALLOWLIST_REGEX_VAR: &str = ALLOWLIST_REGEX_TYPE;
 const PRIMITIVES: &[&str] = &[
     "f64", "f32", "u64", "i64", "u32", "i32", "u16", "i16", "u8", "i8",
 ];
@@ -40,15 +40,15 @@ fn gen_bindings() {
         .arg("--no-layout-tests")
         .arg("--default-enum-style=moduleconsts")
         .arg("--no-doc-comments")
-        .arg("--whitelist-function")
-        .arg(WHITELIST_REGEX_FUNCTION)
-        .arg("--whitelist-type")
-        .arg(WHITELIST_REGEX_TYPE)
-        .arg("--whitelist-var")
-        .arg(WHITELIST_REGEX_VAR)
+        .arg("--allowlist-function")
+        .arg(ALLOWLIST_REGEX_FUNCTION)
+        .arg("--allowlist-type")
+        .arg(ALLOWLIST_REGEX_TYPE)
+        .arg("--allowlist-var")
+        .arg(ALLOWLIST_REGEX_VAR)
         .arg("--no-derive-debug");
     for &ty in PRIMITIVES.iter() {
-        bindgen.arg("--blacklist-type").arg(ty);
+        bindgen.arg("--blocklist-type").arg(ty);
     }
     bindgen
         .arg("-o")
@@ -84,9 +84,9 @@ fn gen_bindings() {
         .layout_tests(false)
         .default_enum_style(bindgen::EnumVariation::ModuleConsts)
         .generate_comments(false)
-        .allowlist_function(WHITELIST_REGEX_FUNCTION)
-        .allowlist_type(WHITELIST_REGEX_TYPE)
-        .allowlist_var(WHITELIST_REGEX_VAR)
+        .allowlist_function(ALLOWLIST_REGEX_FUNCTION)
+        .allowlist_type(ALLOWLIST_REGEX_TYPE)
+        .allowlist_var(ALLOWLIST_REGEX_VAR)
         .derive_debug(false);
     bindgen = PRIMITIVES
         .iter()
